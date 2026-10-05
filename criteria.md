@@ -25,6 +25,7 @@ contains the answer.
 **Why this target:**
 <!-- e.g. "One of my questions is about a topic only two documents mention, so
      I expect that one to be hard." -->
+My five questions cover different campus topics, so I expect the answer to appear in the retrieved chunks for most questions while allowing one harder question.
 
 ---
 
@@ -35,6 +36,7 @@ Every answer the system produces names at least one source document.
 **Why this target:**
 <!-- Why all five and not four? What about your setup makes that achievable —
      or what would have to go wrong for it not to be? -->
+I want every generated answer to name a source so I can check where its information came from. If even one answer has no source, I cannot verify it against the documents.
 
 ---
 
@@ -50,12 +52,12 @@ in at least 4 of 5 tries.
      just keep five of them, or the "4 of 5" above has nothing to be 4 of. -->
 
 **Why this target:**
-<!-- What did your distances look like when you set the cutoff in Milestone 4?
-     Was there a clean gap, or did the two groups overlap? -->
+The five in-scope questions had best distances from 0.1847 to 0.4560, while the five out-of-scope questions ranged from 0.8246 to 0.9340. I chose a 0.6 cutoff because it falls between the furthest in-scope result and the closest out-of-scope result.
 
 ---
 
 ## 4. Something about your chunks
+For at least 4 of 5 sampled chunks, a reader should understand the meaning in its campus life context from the chunk alone. If they need a follow-up question to understand the context, that chunk fails.
 
 <!-- YOU WRITE THIS ONE.
 
@@ -72,12 +74,13 @@ in at least 4 of 5 tries.
 
 
 **Why this target:**
-
+I chose 4 of 5 because words like "class" can mean different things in different contexts. I want most chunks to make the campus context clear, and I would leave an unclear chunk out when answering.
 
 
 ---
 
 ## 5. Your choice
+For all five in-scope questions, the answer's main factual claim must be supported by at least one retrieved source document. Naming a source by itself does not count.
 
 <!-- YOU WRITE THIS ONE TOO.
 
@@ -90,7 +93,7 @@ in at least 4 of 5 tries.
 
 
 **Why this target:**
-
+I chose all five because a source name only helps if that document supports the answer. I want every factual answer to be checkable against the retrieved text.
 
 
 ---
