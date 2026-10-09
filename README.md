@@ -115,9 +115,7 @@ The five in-scope questions had best distances from 0.1847 to 0.4560. The five o
 
 ## How I Used AI
 
-**1.** I asked AI to help me understand how to judge whether a chunk was the right size. It helped me turn that into a check of whether each chunk made sense by itself. I explained that “class” can mean different things in a campus-life context and a coding context, then chose the target that at least 4 of 5 sampled chunks should make sense in context.
-
-**2.** I asked AI to help me choose a chunking approach for my short campus-life posts. It measured the posts and suggested keeping each whole with zero overlap. I approved that approach, checked the five printed sample chunks, and confirmed the program produced 88 chunks.
+I asked AI to help me understand the concepts and guide me thru which file to look at.
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
