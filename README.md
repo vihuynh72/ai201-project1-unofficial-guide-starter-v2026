@@ -178,16 +178,19 @@ I did not change any criterion.
 
 ## Diagnoses
 
-I missed nothing, so there is no failure to explain.
+I missed nothing, so no question failed that I could trace back to a stage.
 
-Were my targets too easy? For criteria 1, 2, 3 and 5, the targets matched what the system did. But each question has one clear answer in one short post, so they were not hard tests. Criterion 4 was the weakest. A random sample of five chunks will rarely land on the few bad ones. I would tighten it to "every chunk makes sense on its own" and check all of them.
+But my targets were easy. Each test question has one clear answer in one short post. So I tried harder questions. Searching costs nothing, so I could try many.
 
-I then looked for a weak spot with a few extra searches. These cost nothing because they do not call the AI model. Seven dining posts are follow-ups that start with "Re:". They repeat facts from the main post and share the same filler sentences. This causes two problems:
+**Campus questions the documents don't answer.** I asked five: gym prices, bookstore hours, pharmacy, student clubs and the career fair. The system should refuse all five. It refused three. The gym question (0.584) and the bookstore question (0.519) slipped under the 0.6 cutoff.
 
-- **Chunking:** a follow-up is cut away from the post it replies to. A line like "the wait figure of none matches what I've seen" means little alone.
-- **Retrieval:** the repeated text fills the top results. When I asked about the wait at Kestrel Commons, four of the five top results were follow-ups, including ones for other dining halls.
+**A question the documents do answer.** "How do I see a counselor?" scored 0.725, so the system would refuse it. But the health center post covers counselling. Spelling it "counselling" helped only a little (0.636). "How long is the wait for counselling?" scored 0.376. My best guess is that the post is mostly about walk-in hours, so a broad "how do I" question lands far from it.
 
-None of this gave a wrong answer in my tests. It is a risk I found, not a failure.
+**The pattern.** Both problems come from the search step (embedding and retrieval). The gate trusts one distance number. That number shows how close the topic is. It does not show whether the answer is there. Unanswered campus questions scored 0.52 to 0.63. Answered but broad questions scored up to 0.73. The two ranges overlap, so no single cutoff can fix both.
+
+**What I would tighten.** Criterion 3 would become: "The system refuses at least 4 of 5 campus questions the documents don't answer." Today it gets 3 of 5, so that version would be a miss.
+
+I also found a smaller problem. Seven dining follow-up posts start with "Re:" and repeat facts from the main post. They crowd the search results. I fix this below.
 
 ## The Improvement
 
