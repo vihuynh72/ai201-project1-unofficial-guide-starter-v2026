@@ -126,117 +126,93 @@ I asked AI to help me understand the concepts and guide me thru which file to lo
 
 # Unit 2
 
-<!-- These sections get ADDED to what's already above. Don't delete or rewrite
-     unit 1 — the point is that someone can see what you said before you knew
-     how it went. -->
-
 ## Run Log — Before
 
-<!-- Your five criteria, three runs each. `python run_eval.py --label before`
-     runs the questions, puts the OUT_OF_SCOPE ones through the gate, and
-     writes it all into results/ for you. Targets come from criteria.md; the
-     verdict column is your call.
+I ran all five questions three times each. My first attempt gave bad numbers because the search index was out of date. I threw that run away, rebuilt the index, and ran again. I also fixed a small bug in my answer checker. It only matched answers that used the exact same capital letters as my expected text.
 
-     Criterion 3 is measured in one deterministic pass rather than three, so
-     the same number goes in all three run columns. That's correct, not lazy.
-
-     Milestone 1. -->
+Criteria 3 and 4 do not change from run to run, so I measured them once and put the same number in all three columns.
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunk contains the answer | 4 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 4. Sampled chunks make sense on their own | 4 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET (one close call) |
+| 5. Main claim is supported by a retrieved source | 5 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
 
-<!-- Underneath, paste the REAL output for each criterion from one of your
-     runs — the actual text your system produced, not a description of it.
-     Name the file and function that produced it. -->
+Two real answers from the first run:
+
+```
+An official transcript costs $8. 
+
+Source: admin_transcript_requests.txt
+```
+
+```
+No, the laundry machines in Old Brewhouse are coin only. 
+
+Source: housing_old_brewhouse.txt (and housing_old_brewhouse_laundry.txt)
+```
+
+The gate refused all five out-of-scope questions. Their best distances were 0.825, 0.934, 0.886, 0.844 and 0.896. The cutoff is 0.6.
+
+For criterion 4, I picked five chunks at random. Four were clearly fine. The fifth was a dining follow-up post. It starts with "Adding to what people have said about The Atrium." It names the place and its facts make sense, so I passed it. But it refers to a post the reader has not seen.
 
 ## Verdicts
 
-<!-- MET or MISSED for each of the five, against the target you wrote last
-     unit — not a new one. Plus a sentence on how you decided. That sentence
-     matters most where it was close.
-
-     If your target said 4 of 5 and your runs came out 4, 3, 4, that's a MISS.
-     The target has to hold, not show up occasionally.
-
-     Milestone 2. -->
-
 | # | Criterion | Verdict | How I decided |
 |---|---|---|---|
-| 1 |  |  |  |
-| 2 |  |  |  |
-| 3 |  |  |  |
-| 4 |  |  |  |
-| 5 |  |  |  |
+| 1 | Retrieved chunk contains the answer | MET | For all five questions, the expected text was in the top results. The search gives the same results every time. |
+| 2 | Every answer names a source | MET | All 15 answers named a source. |
+| 3 | Gate stops out-of-corpus questions | MET | It refused 5 of 5. The closest one (0.825) is far past the 0.6 cutoff. |
+| 4 | Chunks make sense on their own | MET, but close | 5 of 5 passed. I read each one and asked if I would need another question to understand it. One barely passed. |
+| 5 | Main claim is supported by a retrieved source | MET | The source each answer named really did contain the fact. A name alone did not count. |
 
 ## Diagnoses
 
-<!-- For each miss: which stage caused it, and how. The stage alone isn't
-     enough — you need the mechanism.
+I missed nothing, so there is no failure to explain.
 
-     Not a diagnosis: "Question 3 didn't work."
-     A diagnosis:     "Question 3 asks about laundry costs. The answer is in
-                       one sentence that got split across two chunks, so
-                       neither chunk on its own contains it."
+Were my targets too easy? For criteria 1, 2, 3 and 5, the targets matched what the system did. But each question has one clear answer in one short post, so they were not hard tests. Criterion 4 was the weakest. A random sample of five chunks will rarely land on the few bad ones. I would tighten it to "every chunk makes sense on its own" and check all of them.
 
-     The five stages: loading → chunking → embedding → retrieval → generation.
+I then looked for a weak spot with a few extra searches. These cost nothing because they do not call the AI model. Seven dining posts are follow-ups that start with "Re:". They repeat facts from the main post and share the same filler sentences. This causes two problems:
 
-     Look for a pattern. If three misses all ask about numbers, that's one
-     problem, not three.
+- **Chunking:** a follow-up is cut away from the post it replies to. A line like "the wait figure of none matches what I've seen" means little alone.
+- **Retrieval:** the repeated text fills the top results. When I asked about the wait at Kestrel Commons, four of the five top results were follow-ups, including ones for other dining halls.
 
-     Missed nothing? Say so, then say honestly whether your targets were set
-     low, and which one you'd tighten and to what.
-
-     Milestone 3. -->
+None of this gave a wrong answer in my tests. It is a risk I found, not a failure.
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** Each follow-up post is now joined to its main post, so they form one chunk. The chunk count went from 88 to 81. Unit 1 above still says 88. I left it as I wrote it then.
 
-**Why I picked it:**
-
-<!-- Connect it to a specific diagnosis above in one sentence. If you can't,
-     you picked a fix because it sounded impressive. -->
+**Why I picked it:** The follow-ups lost their context and pushed other results out of the top five. Joining them follows the same idea I used in unit 1: keep a post's topic and its details together.
 
 ### Run Log — After
 
-<!-- Same format, same five criteria, three runs each.
-     `python run_eval.py --label after` -->
+Same five questions, three runs each, after rebuilding the index.
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunk contains the answer | 4 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 4. Sampled chunks make sense on their own | 4 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 5. Main claim is supported by a retrieved source | 5 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
 
 **Did it help?**
 
-<!-- Say plainly whether it did, and how you know. If it made things worse,
-     say that — a change that backfired, honestly reported, earns full credit
-     and is more interesting than one that worked. What matters is that you can
-     tell.
+On the five test questions, no. They already passed everything, and the distances did not change. Nothing got worse.
 
-     Milestone 4. -->
+It did help in a smaller way. There were 7 follow-up chunks out of 88 before and there are none now. In the Kestrel Commons search, the follow-ups no longer fill the top results. Kestrel Commons is first, and the rest are main posts or an unrelated transit post.
+
+I tried only six extra searches, and I judged them by reading the names of the results, not the answers. So this shows cleaner search results. It does not prove better answers. The after sample for criterion 4 also came from a different set of chunks, so I cannot compare it directly with the before sample.
 
 ## What's Still Broken
 
-<!-- For each criterion still missed after your fix: what you'd do about it,
-     and why you stopped where you did.
-
-     "I ran out of time" is fine if it's true. Pretending nothing is left is
-     not.
-
-     Milestone 5. -->
+- Five questions that all pass is a weak test. I would add questions where two similar posts compete. For example, five laundry posts came back for the Old Brewhouse question. I stopped because the targets I set in unit 1 are met.
+- My answer checker only looks for the expected text in the answer. It does not check the source. I measured criteria 1, 2 and 5 with a separate quick script.
+- Each chunk is a whole post. A long post could hide a fact. All posts here are short, so it did not happen. I have not tested longer ones.
 
 ## What I'd Do Differently
 
-<!-- Knowing what you know now — which of your five criteria would you write
-     differently, and why?
-
-     Milestone 5. -->
+I would change criteria 4 and 5. For criterion 4, I would check every chunk, not a sample of five. The bad ones are rare, and a sample will miss them. Criterion 5 overlaps with criterion 2 when only one post holds the answer. I would rewrite it to cover questions that need two posts, or where two posts disagree.

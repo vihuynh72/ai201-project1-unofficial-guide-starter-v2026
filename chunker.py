@@ -67,16 +67,22 @@ def fallback_split(
 
 
 def split_documents(documents: list[Document]) -> list[Chunk]:
-    """Keep each complete campus-life source post together as one chunk."""
+    parents = {d.source for d in documents}
+    merged = {d.source: d.text for d in documents}
+    for d in documents:
+        parent = d.source.replace("_followup.txt", ".txt")
+        if parent != d.source and parent in parents:
+            merged[parent] += "\n\n" + d.text
+            del merged[d.source]
     return [
         Chunk(
-            text=doc.text,
-            source=doc.source,
+            text=text,
+            source=source,
             index=0,
             produced_by="chunker.py::split_documents",
         )
-        for doc in documents
-        if doc.text.strip()
+        for source, text in merged.items()
+        if text.strip()
     ]
 
 
