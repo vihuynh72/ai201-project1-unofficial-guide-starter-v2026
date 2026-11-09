@@ -194,9 +194,9 @@ I also found a smaller problem. Seven dining follow-up posts start with "Re:" an
 
 ## The Improvement
 
-**What I changed:** Each follow-up post is now joined to its main post, so they form one chunk. The chunk count went from 88 to 81. Unit 1 above still says 88. I left it as I wrote it then.
+**What I changed:** Each "Re:" follow-up dining post is now joined to its main post. Chunks went from 88 to 81. Unit 1 above still says 88. I left it as I wrote it.
 
-**Why I picked it:** The follow-ups lost their context and pushed other results out of the top five. Joining them follows the same idea I used in unit 1: keep a post's topic and its details together.
+**Why I picked it:** The follow-ups lost their context and filled the top search results. Joining them fixes both.
 
 ### Run Log — After
 
@@ -212,11 +212,13 @@ Same five questions, three runs each, after rebuilding the index.
 
 **Did it help?**
 
-On the five test questions, no. They already passed everything, and the distances did not change. Nothing got worse.
+Not on my five questions. They already passed everything, so the numbers did not move. It did clean up the search results, and nothing got worse.
 
-It did help in a smaller way. There were 7 follow-up chunks out of 88 before and there are none now. In the Kestrel Commons search, the follow-ups no longer fill the top results. Kestrel Commons is first, and the rest are main posts or an unrelated transit post.
+- Every distance score is the same before and after.
+- Follow-up chunks went from 7 to 0.
+- When I asked about the wait at Kestrel Commons, four of the top five results used to be follow-ups. Now Kestrel Commons is first and the rest are main posts.
 
-I tried only six extra searches, and I judged them by reading the names of the results, not the answers. So this shows cleaner search results. It does not prove better answers. The after sample for criterion 4 also came from a different set of chunks, so I cannot compare it directly with the before sample.
+I tried only six extra searches. I judged them by the names of the results, not by the answers. So this shows cleaner results, not better answers.
 
 ## What's Still Broken
 
