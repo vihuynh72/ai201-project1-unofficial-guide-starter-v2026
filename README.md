@@ -222,11 +222,18 @@ I tried only six extra searches. I judged them by the names of the results, not 
 
 ## What's Still Broken
 
-- The gate lets through campus questions that the documents do not cover. A gym membership question scored 0.584 and a bookstore question scored 0.519, both under the 0.6 cutoff. My five out-of-scope questions were too easy to show this. I did not try to fix it.
-- Five questions that all pass is a weak test. I would add questions where two similar posts compete. For example, five laundry posts came back for the Old Brewhouse question. I stopped because the targets I set in unit 1 are met.
-- My answer checker only looks for the expected text in the answer. It does not check the source. I measured criteria 1, 2 and 5 with a separate quick script.
-- Each chunk is a whole post. A long post could hide a fact. All posts here are short, so it did not happen. I have not tested longer ones.
+I missed no criterion. But a few things are still weak.
+
+- The gate is not great. It lets some questions through that the documents can't answer, like gym prices (0.584) and bookstore hours (0.519). It would also refuse a question that does have an answer: "How do I see a counselor?" (0.725). One cutoff can't fix both. Next I would try keyword search next to the meaning search. I stopped because I only fix one thing per unit and my five criteria were already met.
+- My tests are too easy. Every question has one clear answer. I would add harder ones, like broad "how do I" questions and ones the documents almost cover. I ran out of time.
+- My answer checker is basic. It only looks for the expected words in the answer. It doesn't check the source. I checked criteria 1, 2 and 5 with a separate quick script that isn't saved in the project.
 
 ## What I'd Do Differently
 
-I would change criteria 4 and 5. For criterion 4, I would check every chunk, not a sample of five. The bad ones are rare, and a sample will miss them. Criterion 5 overlaps with criterion 2 when only one post holds the answer. I would rewrite it to cover questions that need two posts, or where two posts disagree.
+- Criterion 3: I would test with campus questions the documents don't answer, like gym prices. "Capital of Mongolia" is too easy.
+- Criterion 4: I would check every chunk, not just five. Bad chunks are rare, so a small sample misses them.
+- Criterion 5: It overlaps with criterion 2 when only one post has the answer. I would use questions that need two posts.
+
+## How I Used AI (Unit 2)
+
+I used AI to guide me through the work and check my work. It helps me a lot with writing the chunker.
