@@ -160,13 +160,21 @@ For criterion 4, I picked five chunks at random. Four were clearly fine. The fif
 
 ## Verdicts
 
-| # | Criterion | Verdict | How I decided |
-|---|---|---|---|
-| 1 | Retrieved chunk contains the answer | MET | For all five questions, the expected text was in the top results. The search gives the same results every time. |
-| 2 | Every answer names a source | MET | All 15 answers named a source. |
-| 3 | Gate stops out-of-corpus questions | MET | It refused 5 of 5. The closest one (0.825) is far past the 0.6 cutoff. |
-| 4 | Chunks make sense on their own | MET, but close | 5 of 5 passed. I read each one and asked if I would need another question to understand it. One barely passed. |
-| 5 | Main claim is supported by a retrieved source | MET | The source each answer named really did contain the fact. A name alone did not count. |
+MET means I hit my target. MISSED means I did not. I kept every target from unit 1.
+
+| # | What I checked | Target | Runs | Verdict | Why |
+|---|---|---|---|---|---|
+| 1 | The search finds the chunk with the answer | 4 of 5 | 5, 5, 5 | MET | The answer was in the results every time. |
+| 2 | Every answer names a source | 5 of 5 | 5, 5, 5 | MET | All 15 answers named one. |
+| 3 | The system refuses off-topic questions | 4 of 5 | 5, 5, 5 | MET | It refused all five. |
+| 4 | Chunks make sense on their own | 4 of 5 | 5, 5, 5 | MET | Close. One chunk barely passed. Without it, I still hit 4 of 5. |
+| 5 | The named source supports the answer | 5 of 5 | 5, 5, 5 | MET | Each named source held the fact. |
+
+- Criterion 3 is the weakest. My off-topic questions were easy, like the capital of Mongolia. I also tried two campus questions that the documents do not answer: gym prices and bookstore hours. The system did not refuse them. I kept MET because my target was about clearly off-topic questions.
+- Criterion 4 relies on my opinion. It still holds if I fail the close chunk.
+- Criteria 1, 2 and 5 are checked by matching text, so my opinion does not change them.
+
+I did not change any criterion.
 
 ## Diagnoses
 
@@ -209,6 +217,7 @@ I tried only six extra searches, and I judged them by reading the names of the r
 
 ## What's Still Broken
 
+- The gate lets through campus questions that the documents do not cover. A gym membership question scored 0.584 and a bookstore question scored 0.519, both under the 0.6 cutoff. My five out-of-scope questions were too easy to show this. I did not try to fix it.
 - Five questions that all pass is a weak test. I would add questions where two similar posts compete. For example, five laundry posts came back for the Old Brewhouse question. I stopped because the targets I set in unit 1 are met.
 - My answer checker only looks for the expected text in the answer. It does not check the source. I measured criteria 1, 2 and 5 with a separate quick script.
 - Each chunk is a whole post. A long post could hide a fact. All posts here are short, so it did not happen. I have not tested longer ones.
